@@ -1,5 +1,8 @@
+// ignore_for_file: unnecessary_this
+import 'package:dice_icons/dice_icons.dart';
 import 'package:flutter/material.dart';
 import 'dart:math';
+
 
 void main() {
   runApp(const MyApp());
@@ -24,7 +27,7 @@ class DeBox extends StatelessWidget {
                            mainAxisAlignment: MainAxisAlignment.spaceEvenly, 
                               children: <Widget>[ 
                               
-                              Text(this.faceDe!, style: TextStyle(fontWeight: 
+                              Text(this.faceDe!, style: const TextStyle(fontWeight: 
                                  FontWeight.bold)), Text(this.description!), 
                               Text("Valeur: " + this.valeur.toString()), 
                            ], 
@@ -84,12 +87,17 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int intValue = 0;
+  int _deuxValue = 0;
   int _counter = 0;
   int _currentPageIndex = 0;
+ String? msg = "";
+ List<int> listedrop = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]; 
+ int indexdrop = 0;
 
 void randomint(){
   setState(() {
      intValue = Random().nextInt(10);
+     _deuxValue = Random().nextInt(10);
   });
 }
 
@@ -117,6 +125,17 @@ void randomint(){
         _counter = 0;
       });
     }
+
+    	void _showToast(BuildContext context, String? _message) {
+	    final scaffold = ScaffoldMessenger.of(context);
+	    scaffold.showSnackBar(
+	      SnackBar(
+        content: Text(_message!),
+	        
+      ),
+	    );
+	  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -181,28 +200,75 @@ void randomint(){
           alignment: Alignment.center,
           child: Center(
             child: Container(
+              padding: EdgeInsets.all(20),
              child : Column(
               
               children: [
-                Center(
-             
-                child: Text(
+                DropdownButton(items: listedrop.map<DropdownMenuItem<String>>((String value) {
+                return DropdownMenuItem<String>(
+                  value: value,
+                  child: Text(value),
+                );
+              }).toList()
+, onChanged: indexdrop),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                
+                    children: [
+                    Text(
                   '$intValue',
                   textAlign: TextAlign.center,
                   style: Theme.of(context).textTheme.headline4,
                   
                   
                   ),
+                  Text(
+                    '+',
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.headline4,
+                  ),
+                  Text(
+                    '$_deuxValue',
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.headline4,
+                  ),
+                  
+                  ],
                 ),
-              Center( child :
-                ElevatedButton(
+
+              Column(
+                children: [
+                  ElevatedButton(
             
             onPressed: randomint,
             child: const Text('Tapez pour avoir un nombre aléatoire'),
           ),
+                ],
               ),
-                
-                
+              Padding(
+                padding: EdgeInsets.all(20),
+                child :TextField (
+                 keyboardType: TextInputType.number,
+                 maxLength: 25,
+                 style: TextStyle(
+            fontSize: 16,
+            color: Colors.indigo,
+            fontWeight: FontWeight.bold,
+          ),
+                  decoration: InputDecoration(
+                  labelText: 'Entrer la solution',
+                  hintText: 'Entrer un nombre',
+                  border: OutlineInputBorder()),
+                  onChanged: (value) { 
+                    msg = value;
+                    }
+                ),
+                ),
+
+             ElevatedButton(
+              onPressed: (){_showToast(context,msg);}, 
+              child: const Text('Valider')
+              )
              ],
              )
                
@@ -222,6 +288,36 @@ void randomint(){
             description: "La face 1 du dé",
             valeur: 1,
             image: "../image/face1.png"
+          ),
+          DeBox(
+            faceDe: "2",
+            description: "La face 2 du dé",
+            valeur: 2,
+            image: "../image/face2.png"
+          ),
+          DeBox(
+            faceDe: "3",
+            description: "La face 3 du dé",
+            valeur: 3,
+            image: "../image/face3.png"
+          ),
+          DeBox(
+            faceDe: "4",
+            description: "La face 4 du dé",
+            valeur: 4,
+            image: "../image/face4.png"
+          ),
+          DeBox(
+            faceDe: "5",
+            description: "La face 5 du dé",
+            valeur: 5,
+            image: "../image/face5.png"
+          ),
+          DeBox(
+            faceDe: "6",
+            description: "La face 6 du dé",
+            valeur: 6,
+            image: "../image/face6.png"
           ),
          ],
          )
@@ -274,8 +370,8 @@ void randomint(){
             label: "suivant",
           ),
           NavigationDestination(
-            selectedIcon: Icon(Icons.die),
-            icon: Icon(Icons.gamepad),
+            selectedIcon: Icon(DiceIcons.dice1),
+            icon: Icon(DiceIcons.dice2),
             label: "Liste de dé",
           ),
         ],
