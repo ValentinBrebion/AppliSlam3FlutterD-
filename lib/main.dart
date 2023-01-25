@@ -3,6 +3,8 @@ import 'package:dice_icons/dice_icons.dart';
 import 'package:flutter/material.dart';
 import 'dart:math';
 
+import 'formConn.dart';
+
 
 void main() {
   runApp(const MyApp());
@@ -91,8 +93,9 @@ class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
   int _currentPageIndex = 0;
  String? msg = "";
- List<int> listedrop = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]; 
- int indexdrop = 0;
+ List<String> listedrop = ["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20"]; 
+ 
+ int indexdrop = 1;
 
 void randomint(){
   setState(() {
@@ -100,6 +103,7 @@ void randomint(){
      _deuxValue = Random().nextInt(10);
   });
 }
+
 
   void _incrementCounter() {
     setState(() {
@@ -204,13 +208,7 @@ void randomint(){
              child : Column(
               
               children: [
-                DropdownButton(items: listedrop.map<DropdownMenuItem<String>>((String value) {
-                return DropdownMenuItem<String>(
-                  value: value,
-                  child: Text(value),
-                );
-              }).toList()
-, onChanged: indexdrop),
+                
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                 
@@ -243,6 +241,32 @@ void randomint(){
             onPressed: randomint,
             child: const Text('Tapez pour avoir un nombre aléatoire'),
           ),
+          
+          
+Padding(padding: EdgeInsets.only(top: 20),),
+        ElevatedButton(onPressed: () {
+          Navigator.push(
+    context,
+    MaterialPageRoute(builder: (context) =>  formConn()),
+  );
+        }, 
+        child: Text("Se connecter")),
+
+          DropdownButton(
+            value :indexdrop.toString(),
+            items: listedrop.map<DropdownMenuItem<String>>((String value) {
+                return DropdownMenuItem<String>(
+                  value: value,
+                  child: Text(value),
+                );
+              }).toList(),
+
+              onChanged: (value) {
+                setState(() {
+                  indexdrop = int.parse(value!);
+                });
+                  
+              } ),
                 ],
               ),
               Padding(
@@ -250,12 +274,12 @@ void randomint(){
                 child :TextField (
                  keyboardType: TextInputType.number,
                  maxLength: 25,
-                 style: TextStyle(
+                 style: const TextStyle(
             fontSize: 16,
             color: Colors.indigo,
             fontWeight: FontWeight.bold,
           ),
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                   labelText: 'Entrer la solution',
                   hintText: 'Entrer un nombre',
                   border: OutlineInputBorder()),
@@ -266,6 +290,7 @@ void randomint(){
                 ),
 
              ElevatedButton(
+              
               onPressed: (){_showToast(context,msg);}, 
               child: const Text('Valider')
               )
