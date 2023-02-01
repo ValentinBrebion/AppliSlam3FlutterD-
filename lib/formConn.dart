@@ -1,14 +1,20 @@
+// ignore_for_file: camel_case_types
+
 import 'package:flutter/material.dart';
 
+import 'pageAccueil.dart';
+
 class formConn extends StatelessWidget {
+  const formConn({super.key});
+
 
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return MaterialApp( home : Scaffold(
       appBar: AppBar(title: Text("Formulaire de connexion")),
       
-      body:FormConnexion(),
+      body:const FormConnexion(),
       
       drawer: Drawer(
     child: ListView(
@@ -40,6 +46,7 @@ class formConn extends StatelessWidget {
       ],
     ),
   ),
+    ),
     );
   }
 }
@@ -58,6 +65,22 @@ class _FormConnexion extends State<FormConnexion> {
 
   final _formKey = GlobalKey<FormState>();
   bool _isObscure = true;
+ String valogin = "val";
+ String valPass = "valou";
+  String msgLogin = "";
+  String msgPass = "";
+
+
+bool connexionUser(String msgLogin,String msgPass){
+  if(msgLogin == valogin && msgPass == valPass){
+return true;
+
+  }else{
+    return false;
+  }
+  return false;
+}
+
 
   @override
 Widget build(BuildContext context) {
@@ -76,13 +99,16 @@ Widget build(BuildContext context) {
                   }
                     // retourner la valeur dans une variable
                 },
+                onChanged: (value) { 
+                    msgLogin = value;
+                    }
               ),
-              Padding(padding: EdgeInsets.only(top: 25)),
+              const Padding(padding: EdgeInsets.only(top: 25)),
               TextFormField(
                 obscureText: _isObscure,
                 decoration: InputDecoration(
                   labelText: 'Mot de passe',
-                   prefixIcon: Icon(Icons.lock),
+                   prefixIcon: const Icon(Icons.lock),
                    suffixIcon: IconButton(
                     icon: Icon(
                         _isObscure ? Icons.visibility : Icons.visibility_off),
@@ -90,23 +116,36 @@ Widget build(BuildContext context) {
                       setState(() {
                         _isObscure = !_isObscure;
                       });
-                    })),
+                    },
+                    
+                    )),
                 
                 validator: (value) {
                   if (value!.isEmpty) {
                     return 'Veuillez entrer votre mot de passe';
                   }
                     // retourner la valeur dans une variable
-                }
+                },
+                onChanged: (value) { 
+                    msgPass = value;
+                    }
                 ),
               
              const  Padding(padding: EdgeInsets.only(top:20)),
-              Center(child: ElevatedButton(
+              Center(
+                child: ElevatedButton(
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
                        ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text("Traitement en cours"))
+                        const SnackBar(content: Text("Traitement en cours"))
+                        
                        );
+                       if(connexionUser(msgLogin,msgPass)){
+                        Navigator.push(context, MaterialPageRoute(builder: (context)=> const PageAccueil()), );
+                       }else{
+                
+                       }
+                       
                     }
                   },
                   child: const Text('Connexion'),

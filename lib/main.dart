@@ -7,7 +7,7 @@ import 'formConn.dart';
 
 
 void main() {
-  runApp(const MyApp());
+  runApp(const formConn());
 }
 
 class DeBox extends StatelessWidget {
@@ -204,7 +204,7 @@ void randomint(){
           alignment: Alignment.center,
           child: Center(
             child: Container(
-              padding: EdgeInsets.all(20),
+              padding: const EdgeInsets.all(20),
              child : Column(
               
               children: [
